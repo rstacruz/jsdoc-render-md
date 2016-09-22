@@ -35,7 +35,7 @@ const OPTIONAL = "<span title='Optional'>?</span>"
 function render (data) {
   return data.map(section => {
     if (~['module'].indexOf(section.kind)) {
-      return renderSection(section, { prefix: '## ', signature: false })
+      return renderSection(section, { prefix: '## ' })
     } else if (~['class', 'module'].indexOf(section.kind)) {
       return renderSection(section, { prefix: '## ' })
     } else if (~['function', 'member'].indexOf(section.kind)) {
@@ -66,12 +66,7 @@ function renderSection (section, options = {}) {
   var prelude = `${prefix}${section.name}${access ? access : ''}`
   md.push(prelude)
 
-  if (options.signature !== false) {
-    md.push(`<pre>${renderAtom(section)}</pre>`)
-  }
-
-
-  md = md.concat(renderBody(section))
+  md = md.concat([ renderBody(section) ])
   return md.join('\n\n')
 }
 
@@ -87,13 +82,28 @@ function renderAccess (section) {
  * Unlike [renderSection], this doesn't render the prelude (Markdown heading).
  *
  * @param {Section} section Section to be rendered
- * @returns {string[]} Markdown blocks
+ * @returns {string} a Markdown block
  * @private
  */
 
 function renderBody (section) {
   let md = []
   let prefix = ''
+
+  if (section.params && section.params.length !== 0) {
+    md = md.concat([
+      '<details>\n' +
+      `<summary>${renderAtom(section)}</summary>\n\n` +
+      renderParams(section.params) + '\n' +
+      '</details><br>'
+    ])
+  } else {
+    md = md.concat([
+      '<details>\n' +
+      `<summary>${renderAtom(section)}</summary>\n` +
+      '</details><br>'
+    ])
+  }
 
   if (section.description) {
     md.push(prefix + section.description)
@@ -111,15 +121,11 @@ function renderBody (section) {
     }
   }
 
-  if (section.params && section.params.length !== 0) {
-    md = md.concat(renderParams(section.params))
-  }
-
   if (section.examples) {
     md = md.concat(section.examples.map(ex => '```js\n' + ex + '\n```'))
   }
 
-  return md
+  return md.join('\n\n')
 }
 
 function isSimpleReturn (returns) {
@@ -136,7 +142,9 @@ function isSimpleReturn (returns) {
  */
 
 function renderParams (params) {
-  return [ params.map(p => renderParam(p)).join('\n') ]
+  return '| Param | Type | Description |\n' +
+    '| --- | --- | --- |\n' +
+    params.map(p => renderParam(p)).join('\n')
 }
 
 /**
@@ -149,22 +157,24 @@ function renderParams (params) {
 
 function renderParam (param) {
   const b = '`'
-  const names = param.name.split('.')
 
-  let parts = [Array(names.length).join('  ') + '-']
-  parts.push('`' + names[names.length - 1] + '`')
+  let parts = []
+  parts.push('`' + param.name + '`')
 
   if (param.type) {
     const opt = param.optional ? OPTIONAL : ''
-    parts.push(`*(${opt}${renderAtom(param.type)})*`)
+    parts.push(`${opt}${renderAtom(param.type)}`)
+  } else {
+    parts.push(``)
   }
 
   if (param.description) {
-    parts.push('&mdash;')
     parts.push(param.description)
+  } else {
+    parts.push(``)
   }
 
-  return parts.join(' ')
+  return '| ' + parts.join(' | ') + ' |'
 }
 
 function renderReturns (returns) {
@@ -186,9 +196,13 @@ function renderReturns (returns) {
 
 /**
  * Turns a string into a complete sentence.
+ *
  * @param {string} str The sentence to cententify
  * @return {string}
  * @private
+ * @example
+ * dotify('Hello')   // => 'Hello.'
+ * dotify('Hi.')     // => 'Hi.'
  */
 
 function dotify (str) {
@@ -209,7 +223,7 @@ function renderAtom (atom) {
   if (typeof atom === 'string') {
     return atom
       .replace(/Array\.<([^>]+)>/g, '$1[]')
-      .replace(/\*/g, '\\*')
+      .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
   }

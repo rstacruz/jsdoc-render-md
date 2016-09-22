@@ -1,16 +1,24 @@
 ## jsdoc-render
 
+<details>
+<summary>jsdoc-render</summary>
+</details><br>
+
 ### render
 
-<pre><code>render(<b title='Section[]'>data</b>)</code> → <em>string</em></pre>
+<details>
+<summary><code>render(<b title='Section[]'>data</b>)</code> → <em>string</em></summary>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `data` | Section[] | The data to be parsed |
+</details><br>
 
 Renders a Jsdoc document into a Markdown document.
 Takes an input of a list of sections, as given by jsdom-parse.
 This is the function exported by `require('jsdoc-render')`.
 
 Returns a Markdown document.
-
-- `data` *(Section[])* &mdash; The data to be parsed
 
 ```js
 const data = [ { id: 'len',
@@ -32,50 +40,77 @@ render(data)
 
 ### renderSection<span title='private'>🔸</span>
 
-<pre><code>renderSection(<b title='Section'>section</b>, <b title='object'>options</b>)</code> → <em>string</em></pre>
+<details>
+<summary><code>renderSection(<b title='Section'>section</b>, <b title='object'>options</b>)</code> → <em>string</em></summary>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `section` | Section | The section to render |
+| `options` | <span title='Optional'>?</span>object | Options to be passed |
+| `options.prefix` | <span title='Optional'>?</span>string | The prefix to be passed; usually `'## '` |
+| `options.signature` | <span title='Optional'>?</span>boolean | If `false`, then signature is omitted |
+</details><br>
 
 Renders a `Section` (a function, class, and so on). Returns a Markdown fragment.
 
-- `section` *(Section)* &mdash; The section to render
-- `options` *(<span title='Optional'>?</span>object)* &mdash; Options to be passed
-  - `prefix` *(<span title='Optional'>?</span>string)* &mdash; The prefix to be passed; usually `'## '`
-  - `signature` *(<span title='Optional'>?</span>boolean)* &mdash; If `false`, then signature is omitted
-
 ### renderBody<span title='private'>🔸</span>
 
-<pre><code>renderBody(<b title='Section'>section</b>)</code> → <em>string[]</em></pre>
+<details>
+<summary><code>renderBody(<b title='Section'>section</b>)</code> → <em>string</em></summary>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `section` | Section | Section to be rendered |
+</details><br>
 
 Renders the body of a `Section` (a function, class, and so on).
-Unlike [renderSection], this doesn't render the prelude (Markdown heading). Returns Markdown blocks.
-
-- `section` *(Section)* &mdash; Section to be rendered
+Unlike [renderSection], this doesn't render the prelude (Markdown heading). Returns a Markdown block.
 
 ### renderParams<span title='private'>🔸</span>
 
-<pre><code>renderParams(<b title='object[]'>params</b>)</code> → <em>string</em></pre>
+<details>
+<summary><code>renderParams(<b title='object[]'>params</b>)</code> → <em>string</em></summary>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `params` | object[] | Parameters to be rendered |
+</details><br>
 
 Renders params. 
 
-- `params` *(object[])* &mdash; Parameters to be rendered
-
 ### renderParam<span title='private'>🔸</span>
 
-<pre><code>renderParam(<b title='object'>param</b>)</code> → <em>string</em></pre>
+<details>
+<summary><code>renderParam(<b title='object'>param</b>)</code> → <em>string</em></summary>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `param` | object | Parameter to be rendered |
+</details><br>
 
 Renders a parameter. 
 
-- `param` *(object)* &mdash; Parameter to be rendered
-
 ### dotify<span title='private'>🔸</span>
 
-<pre><code>dotify(<b title='string'>str</b>)</code> → <em>string</em></pre>
+<details>
+<summary><code>dotify(<b title='string'>str</b>)</code> → <em>string</em></summary>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| `str` | string | The sentence to cententify |
+</details><br>
 
 Turns a string into a complete sentence. 
 
-- `str` *(string)* &mdash; The sentence to cententify
+```js
+dotify('Hello')   // => 'Hello.'
+dotify('Hi.')     // => 'Hi.'
+```
 
 ### renderAtom<span title='private'>🔸</span>
 
-<pre><code>renderAtom()</code> → <em>string</em></pre>
+<details>
+<summary><code>renderAtom()</code> → <em>string</em></summary>
+</details><br>
 
 Renders a function signature, a parameter, a type annotation, and so on. 
