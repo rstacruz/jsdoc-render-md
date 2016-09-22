@@ -1,10 +1,17 @@
 /**
+ * Sup.
+ * @module jsdoc-render
+ */
+
+/**
  * Renders a jsdoc document into a markdown document.
  */
 
 function render (data) {
   return data.map(section => {
-    if (~['function', 'member'].indexOf(section.kind)) {
+    if (~['class', 'module'].indexOf(section.kind)) {
+      return renderSection(section, '##')
+    } else if (~['function', 'member'].indexOf(section.kind)) {
       return renderSection(section, '###')
     } else {
       return renderSection(section, '###')
