@@ -64,12 +64,12 @@ function renderSection (section, options = {}) {
   const b = '`'
   const access = renderAccess(section)
   var prelude = `${prefix}${section.name}${access ? access : ''}`
+  md.push(prelude)
 
   if (options.signature !== false) {
-    prelude += `\n> ${renderAtom(section)}`
+    md.push(`<pre>${renderAtom(section)}</pre>`)
   }
 
-  md.push(prelude)
 
   md = md.concat(renderBody(section))
   return md.join('\n\n')
@@ -222,7 +222,7 @@ function renderAtom (atom) {
     const params_ = atom.params.filter(p => p.name.indexOf('.') === -1)
     const left = '<code>' + `${atom.name}(${renderAtom(params_)})` + '</code>'
     const right = renderAtom(atom.returns) || 'void'
-    return `${left}${ARROW}*${right}*`
+    return `${left}${ARROW}<em>${right}</em>`
   }
 
   // A type
