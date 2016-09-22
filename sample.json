@@ -1,0 +1,192 @@
+[
+  {
+    "id": "set",
+    "longname": "set",
+    "name": "set",
+    "scope": "global",
+    "kind": "function",
+    "description": "Sets data into a hamt store.",
+    "params": [
+      {
+        "type": {
+          "names": [
+            "Tree"
+          ]
+        },
+        "description": "The HAMT tree",
+        "name": "data"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "The keypath",
+        "name": "keypath"
+      },
+      {
+        "type": {
+          "names": [
+            "*"
+          ]
+        },
+        "description": "Value to be set",
+        "name": "val"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Tree"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "lineno": 19,
+      "filename": "index.js",
+      "path": "/Users/rsc/Projects/rstacruz/nested-hamt"
+    },
+    "order": 0
+  },
+  {
+    "id": "fromJS",
+    "longname": "fromJS",
+    "name": "fromJS",
+    "scope": "global",
+    "kind": "function",
+    "description": "Converts a JSON tree into hamt.",
+    "params": [
+      {
+        "type": {
+          "names": [
+            "*"
+          ]
+        },
+        "description": "The JSON data to be set",
+        "name": "data"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Tree",
+            "*"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "lineno": 137,
+      "filename": "index.js",
+      "path": "/Users/rsc/Projects/rstacruz/nested-hamt"
+    },
+    "order": 1
+  },
+  {
+    "id": "toJS",
+    "longname": "toJS",
+    "name": "toJS",
+    "scope": "global",
+    "kind": "function",
+    "description": "Converts a HAMT tree to a JSON object.\n\nIf a non-HAMT tree is passed, it'll be returned as is.",
+    "params": [
+      {
+        "type": {
+          "names": [
+            "Tree",
+            "*"
+          ]
+        },
+        "description": "The HAMT tree",
+        "name": "data"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "*"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "lineno": 161,
+      "filename": "index.js",
+      "path": "/Users/rsc/Projects/rstacruz/nested-hamt"
+    },
+    "order": 2
+  },
+  {
+    "id": "isHamt",
+    "longname": "isHamt",
+    "name": "isHamt",
+    "scope": "global",
+    "kind": "function",
+    "description": "Checks if a given data object is a HAMT object.",
+    "params": [
+      {
+        "type": {
+          "names": [
+            "Tree",
+            "*"
+          ]
+        },
+        "description": "A HAMT tree or anythin",
+        "name": "data"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "lineno": 203,
+      "filename": "index.js",
+      "path": "/Users/rsc/Projects/rstacruz/nested-hamt"
+    },
+    "order": 4
+  },
+  {
+    "id": "len",
+    "longname": "len",
+    "name": "len",
+    "scope": "global",
+    "kind": "function",
+    "description": "Returns the number of keys in a HAMT tree.",
+    "params": [
+      {
+        "type": {
+          "names": [
+            "Tree"
+          ]
+        },
+        "name": "data"
+      }
+    ],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        }
+      }
+    ],
+    "meta": {
+      "lineno": 217,
+      "filename": "index.js",
+      "path": "/Users/rsc/Projects/rstacruz/nested-hamt"
+    },
+    "order": 5
+  }
+]
