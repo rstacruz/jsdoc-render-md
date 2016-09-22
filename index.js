@@ -1,15 +1,3 @@
-const read = require('read-input')
-
-read(process.argv.slice(2)).then(res => {
-  const data = JSON.parse(res.data)
-  console.log('data:', require('util').inspect(data, { depth: null, colors: true }))
-  console.log(render(data))
-})
-.catch(err => {
-  console.error(err)
-  throw er
-})
-
 /**
  * Renders a jsdoc document into a markdown document.
  */
@@ -158,3 +146,8 @@ function renderAtom (atom) {
     return atom.name
   }
 }
+
+/*
+ * Export
+ */
+module.exports = render
