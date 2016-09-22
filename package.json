@@ -1,18 +1,19 @@
 {
   "name": "@rstacruz/jsdoc-render",
-  "version": "1.0.0",
   "description": "Renders jsdoc-parse output to Markdown",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": ["jsdoc"],
+  "version": "1.0.0",
   "author": "Rico Sta. Cruz <rico@ricostacruz.com> (http://ricostacruz.com)",
-  "license": "MIT",
   "dependencies": {
+    "jsdoc-parse": "1.2.7",
     "read-input": "0.3.1"
   },
-  "devDependencies": {
-    "jsdoc-parse": "1.2.7"
+  "keywords": [
+    "jsdoc"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update": "jsdoc-parse -P index.js | ./bin/jsdoc-render > API.md"
   }
 }
