@@ -3,6 +3,8 @@
  */
 
 const ARROW = ' → '
+const PRIVATE = '🔸'
+const OPTIONAL = "<span title='Optional'>?</span>"
 
 /**
  * Renders a Jsdoc document into a Markdown document.
@@ -10,7 +12,7 @@ const ARROW = ' → '
  * This is the function exported by `require('jsdoc-render')`.
  *
  * @param {Section[]} data The data to be parsed
- * @return {string} a Markdown document
+ * @return {string} a Markdown document.
  *
  * @example
  * const data = [ { id: 'len',
@@ -45,12 +47,13 @@ function render (data) {
 }
 
 /**
- * Renders a function.
+ * Renders a `Section` (a function, class, and so on).
  *
  * @param {Section} section The section to render
  * @param {object=} options Options to be passed
  * @param {string=} options.prefix The prefix to be passed; usually `'## '`
  * @param {boolean=} options.signature If `false`, then signature is omitted
+ * @returns {string} a Markdown fragment
  * @private
  */
 
@@ -59,11 +62,12 @@ function renderSection (section, options = {}) {
   const prefix = options.prefix || ''
 
   const b = '`'
-  var prelude = `${prefix}${section.name}`
+  const access = renderAccess(section)
+  var prelude = `${prefix}${section.name}${access ? access : ''}`
 
   if (options.signature !== false) {
     prelude += `\n> ${renderAtom(section)}`
-    }
+  }
 
   md.push(prelude)
 
@@ -71,10 +75,19 @@ function renderSection (section, options = {}) {
   return md.join('\n\n')
 }
 
+function renderAccess (section) {
+  if (section.access && section.access !== 'public') {
+    return `<span title='${section.access}'>${PRIVATE}</span>`
+  }
+}
+
+
 /**
- * Renders the body of a `Section` (a function, class, and so on)
+ * Renders the body of a `Section` (a function, class, and so on).
+ * Unlike [renderSection], this doesn't render the prelude (Markdown heading).
  *
- * @return {string[]} Markdown blocks
+ * @param {Section} section Section to be rendered
+ * @returns {string[]} Markdown blocks
  * @private
  */
 
@@ -82,16 +95,20 @@ function renderBody (section) {
   let md = []
   let prefix = ''
 
-  if (section.access && section.access !== 'public') {
-    prefix = `**(${section.access})** `
-  }
-
   if (section.description) {
     md.push(prefix + section.description)
   }
 
   if (section.returns) {
-    md = md.concat(renderReturns(section.returns))
+    const returns = renderReturns(section.returns)
+    // If the return statement doesn't end in a dot, just append it to the last
+    // paragraph.
+    if (!returns) {
+    } else if (isSimpleReturn(section.returns) && md.length !== 0) {
+      md[md.length - 1] = md[md.length - 1] + ' ' + returns
+    } else {
+      md = md.concat(returns)
+    }
   }
 
   if (section.params && section.params.length !== 0) {
@@ -105,6 +122,11 @@ function renderBody (section) {
   return md
 }
 
+function isSimpleReturn (returns) {
+  return returns &&
+    returns[0] &&
+    (!returns[0].description || !/\.$/.test(returns[0].description))
+}
 /**
  * Renders params.
  *
@@ -133,7 +155,7 @@ function renderParam (param) {
   parts.push('`' + names[names.length - 1] + '`')
 
   if (param.type) {
-    const opt = param.optional ? '?' : ''
+    const opt = param.optional ? OPTIONAL : ''
     parts.push(`*(${opt}${renderAtom(param.type)})*`)
   }
 
@@ -147,18 +169,18 @@ function renderParam (param) {
 
 function renderReturns (returns) {
   return returns.map(r => {
-    // A return with a type
-    if (r.description && r.type) {
-      return `Returns ${dotify(r.description)} *(${renderAtom(r.type)})*`
-    }
+    // A return with a type: don't do this, it's noisy and it's redundant
+    // if (r.description && r.type) {
+    //   return `Returns ${dotify(r.description)} *(${renderAtom(r.type)})*`
+    // }
 
     if (r.description) {
       return `Returns ${dotify(r.description)}`
     }
 
-    if (r.type) {
-      return `Returns a ${renderAtom(r.type)}.`
-    }
+    // if (r.type) {
+    //   return `Returns a ${renderAtom(r.type)}.`
+    // }
   })
 }
 
@@ -198,10 +220,9 @@ function renderAtom (atom) {
   if (atom.kind === 'function') {
     // Discard 'deep' parameters
     const params_ = atom.params.filter(p => p.name.indexOf('.') === -1)
-    const left = '`' + `${atom.name}(${renderAtom(params_)})` + '`'
-    const right = renderAtom(atom.returns)
-    if (left && right) return `${left}${ARROW}*${right}*`
-    return left
+    const left = '<code>' + `${atom.name}(${renderAtom(params_)})` + '</code>'
+    const right = renderAtom(atom.returns) || 'void'
+    return `${left}${ARROW}*${right}*`
   }
 
   // A type
@@ -210,9 +231,9 @@ function renderAtom (atom) {
   }
 
   // A parameter
-  // if (atom.name && atom.type) {
-  //   return `${atom.name}: ${renderAtom(atom.type)}`
-  // }
+  if (atom.name && atom.type) {
+    return `<b title='${renderAtom(atom.type)}'>${atom.name}</b>`
+  }
 
   if (atom.name) {
     return atom.name
