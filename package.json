@@ -1,12 +1,12 @@
 {
-  "name": "jsdoc-render",
+  "name": "@rstacruz/jsdoc-render",
   "version": "1.0.0",
-  "description": "",
+  "description": "Renders jsdoc-parse output to Markdown",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["jsdoc"],
   "author": "Rico Sta. Cruz <rico@ricostacruz.com> (http://ricostacruz.com)",
   "license": "MIT",
   "dependencies": {
