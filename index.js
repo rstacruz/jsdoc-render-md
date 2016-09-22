@@ -16,10 +16,10 @@ read(process.argv.slice(2)).then(res => {
 
 function render (data) {
   return data.map(section => {
-    if (section.kind === 'function') {
-      return renderFunction(section)
+    if (~['function', 'member'].indexOf(section.kind)) {
+      return renderSection(section, '###')
     } else {
-      return `## ${section.name}`
+      return renderSection(section, '###')
     }
   }).join("\n\n")
 }
@@ -45,12 +45,76 @@ function render (data) {
  *       order: 5 } ]
  */
 
-function renderFunction (section) {
+function renderSection (section, level) {
+  var md = []
+
+  md.push(`${level} ${section.name}\n` +
+    `> ${renderAtom(section)}`)
+
+  md = renderBody(section, md)
+  return md.join('\n\n')
+}
+
+/**
+ * Renders the body of a function, class, etc
+ */
+
+function renderBody (section, md) {
+  if (section.description) {
+    md.push(section.description)
+  }
+
+  if (section.params && section.params.length !== 0) {
+    md = md.concat(renderParams(section.params))
+  }
+
+  if (section.returns) {
+    md = md.concat(renderReturns(section.returns))
+  }
+
+  if (section.examples) {
+    md = md.concat(section.examples.map(ex => '```js\n' + ex + '\n```'))
+  }
+
+  return md
+}
+
+function renderParams (params) {
+  return [ params.map(p => renderParam(p)).join('\n') ]
+}
+
+function renderParam (param) {
   const b = '`'
-  return `## ${section.name}\n` +
-    `> ${renderAtom(section)}` +
-    `\n` +
-    `${section.description}`
+  var parts = ['-']
+  parts.push('`' + param.name + '`')
+
+  if (param.type) {
+    parts.push(`(${renderAtom(param.type)}${param.optional ? ', optional' : ''})`)
+  }
+
+  if (param.description) {
+    parts.push('&mdash;')
+    parts.push(param.description)
+  }
+
+  return parts.join(' ')
+}
+
+function renderReturns (returns) {
+  return returns.map(r => {
+    // A return with a type
+    if (r.description && r.type) {
+      return `Returns ${r.description} (${renderAtom(r.type)})`
+    }
+
+    if (r.description) {
+      return `Returns ${r.description}`
+    }
+
+    if (r.type) {
+      return `Returns ${renderAtom(r.type)}.`
+    }
+  })
 }
 
 /**
@@ -63,8 +127,10 @@ function renderAtom (atom) {
   }
 
   if (typeof atom === 'string') {
-    return atom
+    return atom.replace(/\*/g, '\\*')
   }
+
+  if (!atom) return
 
   // A function
   if (atom.kind === 'function') {
@@ -76,10 +142,10 @@ function renderAtom (atom) {
 
   // A type
   if (atom.names) {
-    return '*' + atom.names.join(' | ') + '*'
+    return '*' + atom.names.map(n => renderAtom(n)).join(' | ') + '*'
   }
 
-  // A paramete
+  // A parameter
   if (atom.name && atom.type) {
     return `${atom.name}: ${renderAtom(atom.type)}`
   }
