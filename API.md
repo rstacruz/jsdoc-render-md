@@ -7,7 +7,7 @@
 ### render
 
 <details>
-<summary><code>render(<b title='Section[]'>data</b> <sup>Section[]</sup>)</code> → <em>string</em></summary>
+<summary><code>render(<b title='Section[]'>data</b>)</code> → <em>string</em></summary>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -41,7 +41,7 @@ render(data)
 ### renderSection<span title='private'>🔸</span>
 
 <details>
-<summary><code>renderSection(<b title='Section'>section</b> <sup>Section</sup>, <b title='object'>options</b> <sup title="Optional">object?</sup>)</code> → <em>string</em></summary>
+<summary><code>renderSection(<b title='Section'>section</b>, <b title='object'>options</b><sub title="Optional">?</sub>)</code> → <em>string</em></summary>
 
 | Param | Type | Description |
 | --- | --- | --- |
