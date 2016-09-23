@@ -64,7 +64,9 @@ function renderSection (section, options = {}) {
 
   const b = '`'
   const access = renderAccess(section)
-  var prelude = `${prefix}${section.name}${access ? access : ''}`
+  const id = `<a id='${section.id}'></a>`
+  const fn = section.kind === 'function' ? '()' : ''
+  var prelude = `${prefix}${id}${section.name}${fn}${access ? access : ''}`
   md.push(prelude)
 
   md = md.concat([ renderBody(section) ])
@@ -87,7 +89,7 @@ function renderAccess (section) {
  * @private
  */
 
-function renderBody (section) {
+function renderBody (section, options) {
   let md = []
   let prefix = ''
 
@@ -98,7 +100,14 @@ function renderBody (section) {
       renderParams(section.params) + '\n' +
       '</details>'
     ])
-  } else {
+  } else if (section.properties && section.properties.length !== 0) {
+    md = md.concat([
+      '<details>\n' +
+      `<summary>${renderAtom(section)}</summary>\n\n` +
+      renderParams(section.properties) + '\n' +
+      '</details>'
+    ])
+  } else if (['class', 'module'].indexOf(section.kind) === -1) {
     md = md.concat([
       '<details>\n' +
       `<summary>${renderAtom(section)}</summary>\n` +
@@ -135,7 +144,7 @@ function isSimpleReturn (returns) {
     (!returns[0].description || !/\.$/.test(returns[0].description))
 }
 /**
- * Renders params.
+ * Renders params or properties as a table.
  *
  * @param {object[]} params Parameters to be rendered
  * @return {string}
@@ -216,39 +225,45 @@ function dotify (str) {
  * @private
  */
 
-function renderAtom (atom) {
+function renderAtom (atom, options) {
   if (Array.isArray(atom)) {
-    return atom.map(a => renderAtom(a)).join(', ')
+    return atom.map(a => renderAtom(a, options)).join(', ')
   }
 
   if (typeof atom === 'string') {
-    return atom
-      .replace(/Array\.<([^>]+)>/g, '$1[]')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
+    return renderString(atom, options)
   }
 
   if (!atom) return
 
   // A function
-  if (atom.kind === 'function') {
+  if (atom.kind === 'function' || (atom.kind === 'typedef' && atom.params)) {
     // Discard 'deep' parameters
     const params_ = atom.params.filter(p => p.name.indexOf('.') === -1)
     const left = '<code>' + `${atom.name}(${renderAtom(params_)})` + '</code>'
-    const right = renderAtom(atom.returns) || 'void'
-    return `${left}${ARROW}<em>${right}</em>`
+    const right = renderAtom(atom.returns, { html: true }) || 'void'
+    let signature = `${left}${ARROW}<em>${right}</em>`
+
+    if (atom.kind === 'typedef') signature += ` (callback)`
+
+    return signature
+  }
+
+  // A typedef of an object
+  if (atom.kind === 'typedef' && atom.properties) {
+    const signature = '<code>' + `{ ${renderAtom(atom.properties, options)} }` + '</code>'
+    return signature
   }
 
   // A type
   if (atom.names) {
-    return atom.names.map(n => renderAtom(n)).join(' | ')
+    return atom.names.map(n => renderAtom(n, options)).join(' | ')
   }
 
   // A parameter
   if (atom.name && atom.type) {
     const opt = atom.optional ? OPTIONAL_SMALL : ''
-    return `<b title='${renderAtom(atom.type)}'>${atom.name}</b>${opt}`
+    return `<b title='${renderAtom(atom.type, options)}'>${atom.name}</b>${opt}`
   }
 
   if (atom.name) {
@@ -256,11 +271,28 @@ function renderAtom (atom) {
   }
 
   if (atom.type) {
-    return renderAtom(atom.type)
+    return renderAtom(atom.type, options)
   }
 }
+
+function renderString (atom, options) {
+  let str = atom
+    .replace(/Array\.<([^>]+)>/g, '$1[]')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+
+  // Link it if it starts with an uppercase
+  if (options && options.html) {
+    str = str.replace(/([A-Z][a-z0-9]*)+/g,
+      s => `<a href='${s.toLowerCase().replace(/[^a-z0-9]/g, '')}'>${s}</a>`)
+  }
+
+  return str
+  }
 
 /*
  * Export
  */
+
 module.exports = render
