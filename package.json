@@ -3,20 +3,28 @@
   "description": "Renders jsdoc-parse output to Markdown",
   "version": "1.0.0",
   "author": "Rico Sta. Cruz <rico@ricostacruz.com> (http://ricostacruz.com)",
+  "bin": {
+    "jsdoc-render-md": "bin/jsdoc-render-md"
+  },
+  "bugs": {
+    "url": "https://github.com/rstacruz/jsdoc-render-md/issues"
+  },
   "dependencies": {
     "read-input": "0.3.1"
   },
   "devDependencies": {
     "jsdoc-parse": "1.2.7"
   },
+  "homepage": "https://github.com/rstacruz/jsdoc-render-md#readme",
   "keywords": [
     "jsdoc"
   ],
-  "bin": {
-    "jsdoc-render-md": "bin/jsdoc-render-md"
-  },
   "license": "MIT",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rstacruz/jsdoc-render-md.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "update": "jsdoc-parse -P index.js | ./bin/jsdoc-render-md > API.md"
