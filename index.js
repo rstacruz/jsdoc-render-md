@@ -4,7 +4,7 @@
 
 const ARROW = ' → '
 const PRIVATE = '🔸'
-const OPTIONAL = "<span title='Optional'>?</span>"
+const OPTIONAL = ', _optional_'
 
 /**
  * Renders a Jsdoc document into a Markdown document.
@@ -163,7 +163,7 @@ function renderParam (param) {
 
   if (param.type) {
     const opt = param.optional ? OPTIONAL : ''
-    parts.push(`${opt}${renderAtom(param.type)}`)
+    parts.push(`${renderAtom(param.type)}${opt}`)
   } else {
     parts.push(``)
   }
