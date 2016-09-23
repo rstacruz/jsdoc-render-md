@@ -1,7 +1,7 @@
 {
   "name": "@rstacruz/jsdoc-render-md",
   "description": "Renders jsdoc-parse output to Markdown",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Rico Sta. Cruz <rico@ricostacruz.com> (http://ricostacruz.com)",
   "bin": {
     "jsdoc-render-md": "bin/jsdoc-render-md"

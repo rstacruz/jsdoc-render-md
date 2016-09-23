@@ -251,8 +251,7 @@ function renderAtom (atom, options) {
 
   // A typedef of an object
   if (atom.kind === 'typedef' && atom.properties) {
-    const signature = '<code>' + `{ ${renderAtom(atom.properties, options)} }` + '</code>'
-    return signature
+    return '<code>' + `{ ${renderAtom(atom.properties, options)} }` + '</code>'
   }
 
   // A type
@@ -262,8 +261,10 @@ function renderAtom (atom, options) {
 
   // A parameter
   if (atom.name && atom.type) {
-    const opt = atom.optional ? OPTIONAL_SMALL : ''
-    return `<b title='${renderAtom(atom.type, options)}'>${atom.name}</b>${opt}`
+    let html = `<b title='${renderAtom(atom.type, options)}'>${atom.name}</b>`
+    if (atom.optional) html = `${html}${OPTIONAL_SMALL}`
+    if (atom.variable) html = `...${html}`
+    return html
   }
 
   if (atom.name) {
