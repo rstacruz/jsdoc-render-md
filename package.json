@@ -1,5 +1,5 @@
 {
-  "name": "@rstacruz/jsdoc-render",
+  "name": "@rstacruz/jsdoc-render-md",
   "description": "Renders jsdoc-parse output to Markdown",
   "version": "1.0.0",
   "author": "Rico Sta. Cruz <rico@ricostacruz.com> (http://ricostacruz.com)",
@@ -13,12 +13,12 @@
     "jsdoc"
   ],
   "bin": {
-    "jsdoc-render": "bin/jsdoc-render"
+    "jsdoc-render-md": "bin/jsdoc-render-md"
   },
   "license": "MIT",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "update": "jsdoc-parse -P index.js | ./bin/jsdoc-render > API.md"
+    "update": "jsdoc-parse -P index.js | ./bin/jsdoc-render-md > API.md"
   }
 }
