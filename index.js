@@ -5,6 +5,7 @@
 const ARROW = ' → '
 const PRIVATE = '🔸'
 const OPTIONAL = ', _optional_'
+const OPTIONAL_SMALL = '<sub title="Optional">?</sub>'
 
 /**
  * Renders a Jsdoc document into a Markdown document.
@@ -246,7 +247,8 @@ function renderAtom (atom) {
 
   // A parameter
   if (atom.name && atom.type) {
-    return `<b title='${renderAtom(atom.type)}'>${atom.name}</b>`
+    const opt = atom.optional ? OPTIONAL_SMALL : ''
+    return `<b title='${renderAtom(atom.type)}'>${atom.name}</b>${opt}`
   }
 
   if (atom.name) {
