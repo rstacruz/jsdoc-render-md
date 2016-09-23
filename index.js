@@ -9,7 +9,7 @@ const OPTIONAL = "<span title='Optional'>?</span>"
 /**
  * Renders a Jsdoc document into a Markdown document.
  * Takes an input of a list of sections, as given by jsdom-parse.
- * This is the function exported by `require('jsdoc-render')`.
+ * This is the function exported by *require('jsdoc-render')*.
  *
  * @param {Section[]} data The data to be parsed
  * @return {string} a Markdown document.
@@ -47,7 +47,7 @@ function render (data) {
 }
 
 /**
- * Renders a `Section` (a function, class, and so on).
+ * Renders a *Section* (a function, class, and so on).
  *
  * @param {Section} section The section to render
  * @param {object=} options Options to be passed
@@ -78,7 +78,7 @@ function renderAccess (section) {
 
 
 /**
- * Renders the body of a `Section` (a function, class, and so on).
+ * Renders the body of a *Section* (a function, class, and so on).
  * Unlike [renderSection], this doesn't render the prelude (Markdown heading).
  *
  * @param {Section} section Section to be rendered
@@ -95,13 +95,13 @@ function renderBody (section) {
       '<details>\n' +
       `<summary>${renderAtom(section)}</summary>\n\n` +
       renderParams(section.params) + '\n' +
-      '</details><br>'
+      '</details>'
     ])
   } else {
     md = md.concat([
       '<details>\n' +
       `<summary>${renderAtom(section)}</summary>\n` +
-      '</details><br>'
+      '</details>'
     ])
   }
 

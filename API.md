@@ -2,7 +2,7 @@
 
 <details>
 <summary>jsdoc-render</summary>
-</details><br>
+</details>
 
 ### render
 
@@ -12,11 +12,11 @@
 | Param | Type | Description |
 | --- | --- | --- |
 | `data` | Section[] | The data to be parsed |
-</details><br>
+</details>
 
 Renders a Jsdoc document into a Markdown document.
 Takes an input of a list of sections, as given by jsdom-parse.
-This is the function exported by `require('jsdoc-render')`.
+This is the function exported by *require('jsdoc-render')*.
 
 Returns a Markdown document.
 
@@ -49,9 +49,9 @@ render(data)
 | `options` | <span title='Optional'>?</span>object | Options to be passed |
 | `options.prefix` | <span title='Optional'>?</span>string | The prefix to be passed; usually `'## '` |
 | `options.signature` | <span title='Optional'>?</span>boolean | If `false`, then signature is omitted |
-</details><br>
+</details>
 
-Renders a `Section` (a function, class, and so on). Returns a Markdown fragment.
+Renders a *Section* (a function, class, and so on). Returns a Markdown fragment.
 
 ### renderBody<span title='private'>🔸</span>
 
@@ -61,9 +61,9 @@ Renders a `Section` (a function, class, and so on). Returns a Markdown fragment.
 | Param | Type | Description |
 | --- | --- | --- |
 | `section` | Section | Section to be rendered |
-</details><br>
+</details>
 
-Renders the body of a `Section` (a function, class, and so on).
+Renders the body of a *Section* (a function, class, and so on).
 Unlike [renderSection], this doesn't render the prelude (Markdown heading). Returns a Markdown block.
 
 ### renderParams<span title='private'>🔸</span>
@@ -74,7 +74,7 @@ Unlike [renderSection], this doesn't render the prelude (Markdown heading). Retu
 | Param | Type | Description |
 | --- | --- | --- |
 | `params` | object[] | Parameters to be rendered |
-</details><br>
+</details>
 
 Renders params. 
 
@@ -86,7 +86,7 @@ Renders params.
 | Param | Type | Description |
 | --- | --- | --- |
 | `param` | object | Parameter to be rendered |
-</details><br>
+</details>
 
 Renders a parameter. 
 
@@ -98,7 +98,7 @@ Renders a parameter.
 | Param | Type | Description |
 | --- | --- | --- |
 | `str` | string | The sentence to cententify |
-</details><br>
+</details>
 
 Turns a string into a complete sentence. 
 
@@ -111,6 +111,6 @@ dotify('Hi.')     // => 'Hi.'
 
 <details>
 <summary><code>renderAtom()</code> → <em>string</em></summary>
-</details><br>
+</details>
 
 Renders a function signature, a parameter, a type annotation, and so on. 

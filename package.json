@@ -12,6 +12,9 @@
   "keywords": [
     "jsdoc"
   ],
+  "bin": {
+    "jsdoc-render": "bin/jsdoc-render"
+  },
   "license": "MIT",
   "main": "index.js",
   "scripts": {
