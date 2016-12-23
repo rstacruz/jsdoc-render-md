@@ -303,7 +303,7 @@ function renderString (atom, options) {
   // Link it if it starts with an uppercase
   if (options && options.html) {
     str = str.replace(/([A-Z][a-z0-9]*)+/g,
-      s => `<a href='${s.toLowerCase().replace(/[^a-z0-9]/g, '')}'>${s}</a>`)
+      s => `<a href='#${s.toLowerCase().replace(/[^a-z0-9]/g, '')}'>${s}</a>`)
   }
 
   return str
