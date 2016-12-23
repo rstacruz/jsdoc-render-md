@@ -1,3 +1,10 @@
+## [v1.3.0]
+> Dec 24, 2016
+
+- Update appearance of function return signatures.
+
+[v1.3.0]: https://github.com/rstacruz/jsdoc-render-md/compare/v1.2.0...v1.3.0
+
 ## [v1.2.0]
 > Sep 23, 2016
 
