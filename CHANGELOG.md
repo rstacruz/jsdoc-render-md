@@ -1,3 +1,10 @@
+## [v1.3.1]
+> Dec 24, 2016
+
+- Fix invalid hyperlinks.
+
+[v1.3.1]: https://github.com/rstacruz/jsdoc-render-md/compare/v1.3.0...v1.3.1
+
 ## [v1.3.0]
 > Dec 24, 2016
 
