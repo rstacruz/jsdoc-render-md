@@ -94,13 +94,16 @@ function renderBody (section, options) {
   let prefix = ''
 
   if (section.params && section.params.length !== 0) {
+    // section.kind === 'function'
     md = md.concat([
       '<details>\n' +
       `<summary>${renderAtom(section)}</summary>\n\n` +
-      renderParams(section.params) + '\n' +
+      renderParams(section.params) + '\n\n' +
+      renderReturnSignature(section) + '\n' +
       '</details>'
     ])
   } else if (section.properties && section.properties.length !== 0) {
+    // section.kind === 'object' ?
     md = md.concat([
       '<details>\n' +
       `<summary>${renderAtom(section)}</summary>\n\n` +
@@ -155,6 +158,23 @@ function renderParams (params) {
   return '| Param | Type | Description |\n' +
     '| --- | --- | --- |\n' +
     params.map(p => renderParam(p)).join('\n')
+}
+
+/**
+ * Renders a return signature.
+ *
+ *     > Returns <code>String</code>
+ *
+ * @param {object} atom A function
+ * @private
+ */
+
+function renderReturnSignature (atom) {
+  const type = renderAtom(atom.returns, { html: true }) || 'void'
+  let signature = `<code>${type}</code>`
+  if (atom.kind === 'typedef') signature += ` *(callback)*`
+
+  return `> Returns ${signature}`
 }
 
 /**
@@ -241,10 +261,7 @@ function renderAtom (atom, options) {
     // Discard 'deep' parameters
     const params_ = atom.params.filter(p => p.name.indexOf('.') === -1)
     const left = '<code>' + `${atom.name}(${renderAtom(params_)})` + '</code>'
-    const right = renderAtom(atom.returns, { html: true }) || 'void'
-    let signature = `${left}${ARROW}<em>${right}</em>`
-
-    if (atom.kind === 'typedef') signature += ` (callback)`
+    let signature = `${left}`
 
     return signature
   }
