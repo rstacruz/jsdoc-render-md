@@ -5,5 +5,9 @@
 This is Rico's opinionated Markdown renderer for jsdoc comments.
 
 ```sh
-jsdoc-parse FILE.js | jsdoc-render-md > API.md
+npm install jsdoc2md
+npm install @rstacruz/jsdoc-render-md
+
+./node_modules/.bin/jsdoc2md --json FILE.js \
+  | ./node_modules/.bin/jsdoc-render-md > API.md
 ```
