@@ -4,21 +4,29 @@ const render = require('../index')
 
 const cli = require('meow')(`
   Usage:
-    $ jsdoc-render-md
+    $ jsdoc-render-md input.js > outptu.md
 
   Options:
+        --private    Include private methods
+
+  Output options:
         --md         Output markdown (default)
         --json       Output json
+
+  Other options:
     -h, --help       show usage information
     -v, --version    print version info and exit
 `, {
-  boolean: ['help', 'version', 'js', 'json'],
+  boolean: ['help', 'version', 'js', 'json', 'private'],
   alias: {
     h: 'help', v: 'version'
   }
 })
 
 const mode = cli.flags.json ? 'json' : 'md'
+const renderOptions = {
+  includePrivate: cli.flags.private
+}
 
 read(cli.input).then(res => {
   let json
@@ -32,7 +40,7 @@ read(cli.input).then(res => {
   if (mode === 'json') {
     console.log(JSON.stringify(json, null, 2))
   } else {
-    console.log(render(json))
+    console.log(render(json, renderOptions))
   }
 })
 .catch(err => {

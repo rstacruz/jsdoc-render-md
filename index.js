@@ -33,12 +33,16 @@ const OPTIONAL_SMALL = '<sub title="Optional">?</sub>'
  * render(data)
  */
 
-function render (data) {
+function render (data, options) {
+  // Remove unrenderable sections
+  data = data.filter(s => !s.undocumented && s.kind !== 'package')
+
+  // Remove privates
+  if (!options || !options.includePrivate) {
+    data = data.filter(s => !s.access || s.access !== 'private')
+  }
+
   return data
-    .filter(section => {
-      return !section.undocumented &&
-        section.kind !== 'package'
-    })
     .map(section => {
       if (~['module'].indexOf(section.kind)) {
         return renderSection(section, { prefix: '## ' })
