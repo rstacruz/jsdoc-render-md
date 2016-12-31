@@ -2,11 +2,45 @@
 const read = require('read-input')
 const render = require('../index')
 
-read(process.argv.slice(2)).then(res => {
-  const data = JSON.parse(res.data)
-  console.log(render(data))
+const cli = require('meow')(`
+  Usage:
+    $ jsdoc-render-md
+
+  Options:
+        --md         Output markdown (default)
+        --json       Output json
+    -h, --help       show usage information
+    -v, --version    print version info and exit
+`, {
+  boolean: ['help', 'version', 'js', 'json'],
+  alias: {
+    h: 'help', v: 'version'
+  }
+})
+
+const mode = cli.flags.json ? 'json' : 'md'
+
+read(cli.input).then(res => {
+  let json
+
+  try {
+    json = JSON.parse(res.data)
+  } catch (_) {
+    json = parse(res.data)
+  }
+
+  if (mode === 'json') {
+    console.log(JSON.stringify(json, null, 2))
+  } else {
+    console.log(render(json))
+  }
 })
 .catch(err => {
   console.error(err)
-  throw er
+  throw err
 })
+
+function parse (source) {
+  const jsdoc = require('jsdoc-api')
+  return jsdoc.explainSync({ source })
+}

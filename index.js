@@ -34,17 +34,23 @@ const OPTIONAL_SMALL = '<sub title="Optional">?</sub>'
  */
 
 function render (data) {
-  return data.map(section => {
-    if (~['module'].indexOf(section.kind)) {
-      return renderSection(section, { prefix: '## ' })
-    } else if (~['class', 'module'].indexOf(section.kind)) {
-      return renderSection(section, { prefix: '## ' })
-    } else if (~['function', 'member'].indexOf(section.kind)) {
-      return renderSection(section, { prefix: '### ' })
-    } else {
-      return renderSection(section, { prefix: '### ' })
-    }
-  }).join("\n\n")
+  return data
+    .filter(section => {
+      return !section.undocumented &&
+        section.kind !== 'package'
+    })
+    .map(section => {
+      if (~['module'].indexOf(section.kind)) {
+        return renderSection(section, { prefix: '## ' })
+      } else if (~['class', 'module'].indexOf(section.kind)) {
+        return renderSection(section, { prefix: '## ' })
+      } else if (~['function', 'member'].indexOf(section.kind)) {
+        return renderSection(section, { prefix: '### ' })
+      } else {
+        return renderSection(section, { prefix: '### ' })
+      }
+    })
+    .join("\n\n")
 }
 
 /**
@@ -64,7 +70,7 @@ function renderSection (section, options = {}) {
 
   const b = '`'
   const access = renderAccess(section)
-  const id = `<a id='${section.id}'></a>`
+  const id = `<a id='${section.name}'></a>`
   const fn = section.kind === 'function' ? '()' : ''
   var prelude = `${prefix}${id}${section.name}${fn}${access ? access : ''}`
   md.push(prelude)

@@ -10,10 +10,13 @@
     "url": "https://github.com/rstacruz/jsdoc-render-md/issues"
   },
   "dependencies": {
+    "jsdoc-api": "2.0.6",
+    "meow": "3.7.0",
     "read-input": "0.3.1"
   },
   "devDependencies": {
-    "jsdoc-parse": "1.2.7"
+    "jsdoc-parse": "2.0.5",
+    "jsdoc-to-markdown": "2.0.1"
   },
   "homepage": "https://github.com/rstacruz/jsdoc-render-md#readme",
   "keywords": [
