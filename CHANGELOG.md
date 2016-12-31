@@ -1,3 +1,11 @@
+## [v2.0.0]
+> Dec 31, 2016
+
+- You can now run jsdoc-render-md on JavaScript files (`jsdoc-render-md *.js`).
+- Add support for jsdoc-api v2.
+
+[v2.0.0]: https://github.com/rstacruz/jsdoc-render-md/compare/v1.3.1...v2.0.0
+
 ## [v1.3.1]
 > Dec 24, 2016
 
