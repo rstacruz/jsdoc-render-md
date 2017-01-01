@@ -13,6 +13,7 @@ const OPTIONAL_SMALL = '<sub title="Optional">?</sub>'
  * This is the function exported by *require('jsdoc-render')*.
  *
  * @param {Section[]} data The data to be parsed
+ * @param {String=} options.title The title to be used
  * @return {string} a Markdown document.
  *
  * @example
@@ -34,6 +35,8 @@ const OPTIONAL_SMALL = '<sub title="Optional">?</sub>'
  */
 
 function render (data, options) {
+  if (!options) options = {}
+
   // Remove unrenderable sections
   data = data.filter(s => !s.undocumented && s.kind !== 'package')
 
@@ -42,7 +45,7 @@ function render (data, options) {
     data = data.filter(s => !s.access || s.access !== 'private')
   }
 
-  return data
+  let output = data
     .map(section => {
       if (~['module'].indexOf(section.kind)) {
         return renderSection(section, { prefix: '## ' })
@@ -55,6 +58,12 @@ function render (data, options) {
       }
     })
     .join("\n\n")
+
+  if (options.title) {
+    output = `# ${options.title}\n\n${output}`
+  }
+
+  return output
 }
 
 /**

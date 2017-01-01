@@ -7,15 +7,16 @@ const cli = require('meow')(`
     $ jsdoc-render-md input.js > outptu.md
 
   Options:
-        --private    Include private methods
+        --private     Include private methods
+        --title=TEXT  Use this for the title
 
   Output options:
-        --md         Output markdown (default)
-        --json       Output json
+        --md          Output markdown (default)
+        --json        Output json
 
   Other options:
-    -h, --help       show usage information
-    -v, --version    print version info and exit
+    -h, --help        show usage information
+    -v, --version     print version info and exit
 `, {
   boolean: ['help', 'version', 'js', 'json', 'private'],
   alias: {
@@ -25,7 +26,8 @@ const cli = require('meow')(`
 
 const mode = cli.flags.json ? 'json' : 'md'
 const renderOptions = {
-  includePrivate: cli.flags.private
+  includePrivate: cli.flags.private,
+  title: cli.flags.title
 }
 
 read(cli.input).then(res => {
