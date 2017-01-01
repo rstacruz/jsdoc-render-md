@@ -4,8 +4,8 @@
 
 const ARROW = ' → '
 const PRIVATE = '🔸'
-const OPTIONAL = ', _optional_'
-const OPTIONAL_SMALL = '<sub title="Optional">?</sub>'
+const OPTIONAL = '<sub title="Optional">?</sub>'
+const OPTIONAL_SMALL = OPTIONAL
 
 /**
  * Renders a Jsdoc document into a Markdown document.
@@ -59,11 +59,41 @@ function render (data, options) {
     })
     .join("\n\n")
 
+  if (options.toc) {
+    output = `${renderToc(data)}\n\n${output}`
+  }
+
   if (options.title) {
     output = `# ${options.title}\n\n${output}`
   }
 
   return output
+}
+
+/**
+ * Renders a toc
+ *
+ * @private
+ */
+
+function renderToc (sections) {
+  return sections.map(s => {
+    const name = renderSectionName(s)
+
+    if (s.kind === 'module') {
+      return `* <strong><a href="#${s.name}">${name}</a></strong>`
+    } else {
+      return `   - <a href="#${s.name}">${name}</a>`
+    }
+  }).join('\n')
+}
+
+function renderSectionName (section) {
+  if (section.kind === 'function') {
+    return `${section.name}()`
+  } else {
+    return section.name
+  }
 }
 
 /**
@@ -84,8 +114,8 @@ function renderSection (section, options = {}) {
   const b = '`'
   const access = renderAccess(section)
   const id = `<a id='${section.name}'></a>`
-  const fn = section.kind === 'function' ? '()' : ''
-  var prelude = `${prefix}${id}${section.name}${fn}${access ? access : ''}`
+  const name = renderSectionName(section)
+  var prelude = `${prefix}${id}${name}${access ? access : ''}`
   md.push(prelude)
 
   md = md.concat([ renderBody(section) ])

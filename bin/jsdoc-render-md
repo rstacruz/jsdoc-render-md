@@ -4,11 +4,12 @@ const render = require('../index')
 
 const cli = require('meow')(`
   Usage:
-    $ jsdoc-render-md input.js > outptu.md
+    $ jsdoc-render-md input.js > output.md
 
   Options:
         --private     Include private methods
         --title=TEXT  Use this for the title
+        --no-toc      Disables TOC generation
 
   Output options:
         --md          Output markdown (default)
@@ -18,7 +19,9 @@ const cli = require('meow')(`
     -h, --help        show usage information
     -v, --version     print version info and exit
 `, {
-  boolean: ['help', 'version', 'js', 'json', 'private'],
+  boolean: [
+    'help', 'version', 'js', 'json', 'private', 'toc'
+  ],
   alias: {
     h: 'help', v: 'version'
   }
@@ -27,7 +30,8 @@ const cli = require('meow')(`
 const mode = cli.flags.json ? 'json' : 'md'
 const renderOptions = {
   includePrivate: cli.flags.private,
-  title: cli.flags.title
+  title: cli.flags.title,
+  toc: cli.flags.toc !== false
 }
 
 read(cli.input).then(res => {
